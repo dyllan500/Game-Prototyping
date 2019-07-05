@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/dyllan/CLionProjects/game/main.c
+stdio.h
+-
+string.h
+-
+SDL2/SDL.h
+/home/dyllan/CLionProjects/game/SDL2/SDL.h
+SDL2/SDL_image.h
+/home/dyllan/CLionProjects/game/SDL2/SDL_image.h
+SDL2/SDL_mixer.h
+/home/dyllan/CLionProjects/game/SDL2/SDL_mixer.h
+SDL2/SDL_ttf.h
+/home/dyllan/CLionProjects/game/SDL2/SDL_ttf.h
+time.h
+-
+math.h
+-
+
