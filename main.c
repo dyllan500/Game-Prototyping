@@ -24,7 +24,7 @@ typedef struct{
     char r;
     char trigger;
     char hit;
-    int tics;
+    int tics, awarex, awarew, awareh, atac;
 } Skeleton;
 
 typedef struct{
@@ -457,10 +457,10 @@ void collision(SDL_Renderer *renderer, GameState *game){
     //calculate collisons aftrer getting key pressses
     //add a varible for both x and y movement so if collideing or no moving == 0 and if key pressed movement = 10
     //add man w and man h in boundary
-    int ax;
-    int ay;
-    int aw;
-    int ah;
+    int ax =0;
+    int ay=0;
+    int aw=0;
+    int ah=0;
     int doe = 0;
     int x = 0;
     int y = 0;
@@ -469,145 +469,85 @@ void collision(SDL_Renderer *renderer, GameState *game){
         ay = game->man.posy+150;
         aw = game->man.posw-230;
         ah = game->man.posh-235;
-        for (int i = 0; i < 100; i++){
-            if (!(game->tree[i].collx + game->tree[i].collw < ax|| game->tree[i].collx > ax + aw || game->tree[i].y > ay + ah || game->tree[i].y + game->tree[i].h < ay) && game->tree[i].life == 'y' && game->man.life == 'y'){
-                if (game->man.hit == 'y'){
-                    game->tree[i].tics = SDL_GetTicks();
-                    game->tree[i].frame = 1;
-                    game->tree[i].life = 'n';
-                }
-            }
-        }
+
     } else if (game->man.r == 'e'){
         ax = game->man.posx+180;
         ay = game->man.posy+150;
         aw = game->man.posw-230;
         ah = game->man.posh-235;
-        for (int i = 0; i < 100; i++){
-            if (!(game->tree[i].collx + game->tree[i].collw < ax|| game->tree[i].collx > ax + aw || game->tree[i].y > ay + ah || game->tree[i].y + game->tree[i].h < ay) && game->tree[i].life == 'y' && game->man.life == 'y'){
-                if (game->man.hit == 'y'){
-                    game->tree[i].tics = SDL_GetTicks();
-                    game->tree[i].frame = 1;
-                    game->tree[i].life = 'n';
-                }
-            }
-            if (game->dirt[i].life == 'n' && doe == 0 && game->man.hit == 'y'){
-                if ((game->man.collx + game->offsetx)%30 == 0 ){
-                    x = game->man.collx;
-                }else if ((game->man.collx+ game->offsetx)%30 >= 15 ){
-                    x =  game->man.collx + (30-game->man.collx%30);
-                } else if ((game->man.collx+ game->offsetx)%30 < 15){
-                    x = game->man.collx - game->man.collx%30;
-                }
-                if (game->man.colly + game->offsety%30 == 0 ){
-                    y = game->man.colly;
-                }else if ((game->man.colly+ game->offsety)%30 >= 15 ){
-                    y =  (game->man.colly + (30-game->man.colly%30));
-                } else if ((game->man.colly + game->offsety)%30 < 15){
-                    y = (game->man.colly - (game->man.colly%30));
-                }
-                for (int j = 0; j < 100; ++j) {
-                    if (game->dirt[j].life == 'y' && game->dirt[j].x == x && game->dirt[j].y == y){
-                        doe = 1;
-                    }
-                }
 
-                if (doe == 0){
-                    game->dirt[i].life = 'y';
-                    game->dirt[i].x = x;
-                    game->dirt[i].y = y;
-                    doe = 1;
-                }
-            }
-        }
+//            if (game->dirt[i].life == 'n' && doe == 0 && game->man.hit == 'y'){
+//                if ((game->man.collx + game->offsetx)%30 == 0 ){
+//                    x = game->man.collx;
+//                }else if ((game->man.collx+ game->offsetx)%30 >= 15 ){
+//                    x =  game->man.collx + (30-game->man.collx%30);
+//                } else if ((game->man.collx+ game->offsetx)%30 < 15){
+//                    x = game->man.collx - game->man.collx%30;
+//                }
+//                if (game->man.colly + game->offsety%30 == 0 ){
+//                    y = game->man.colly;
+//                }else if ((game->man.colly+ game->offsety)%30 >= 15 ){
+//                    y =  (game->man.colly + (30-game->man.colly%30));
+//                } else if ((game->man.colly + game->offsety)%30 < 15){
+//                    y = (game->man.colly - (game->man.colly%30));
+//                }
+//                for (int j = 0; j < 100; ++j) {
+//                    if (game->dirt[j].life == 'y' && game->dirt[j].x == x && game->dirt[j].y == y){
+//                        doe = 1;
+//                    }
+//                }
+//
+//                if (doe == 0){
+//                    game->dirt[i].life = 'y';
+//                    game->dirt[i].x = x;
+//                    game->dirt[i].y = y;
+//                    doe = 1;
+//                }
+//            }
+
     } else if (game->man.r == 's'){
         ax = game->man.posx+120;
         ay = game->man.posy+230;
         aw = game->man.posw-230;
         ah = game->man.posh-235;
-        for (int i = 0; i < 100; i++){
-            if (!(game->tree[i].collx + game->tree[i].collw < ax|| game->tree[i].collx > ax + aw || game->tree[i].y > ay + ah || game->tree[i].y + game->tree[i].h < ay) && game->tree[i].life == 'y' && game->man.life == 'y'){
-                if (game->man.hit == 'y'){
-                    game->tree[i].tics = SDL_GetTicks();
-                    game->tree[i].frame = 1;
-                    game->tree[i].life = 'n';
-                }
-            }
-        }
+
     }else if (game->man.r == 'n'){
         ax = game->man.posx+120;
         ay = game->man.posy+100;
         aw = game->man.posw-230;
         ah = game->man.posh-235;
-        for (int i = 0; i < 100; i++){
-            if (!(game->tree[i].collx + game->tree[i].collw < ax|| game->tree[i].collx > ax + aw || game->tree[i].y > ay + ah || game->tree[i].y + game->tree[i].h < ay) && game->tree[i].life == 'y' && game->man.life == 'y'){
-                if (game->man.hit == 'y'){
-                    game->tree[i].tics = SDL_GetTicks();
-                    game->tree[i].frame = 1;
-                    game->tree[i].life = 'n';
-                }
-            }
-        }
+
     }else if (game->man.r == 'z'){
         ax = game->man.posx+70;
         ay = game->man.posy+210;
         aw = game->man.posw-230;
         ah = game->man.posh-235;
-        for (int i = 0; i < 100; i++){
-            if (!(game->tree[i].collx + game->tree[i].collw < ax|| game->tree[i].collx > ax + aw || game->tree[i].y > ay + ah || game->tree[i].y + game->tree[i].h < ay) && game->tree[i].life == 'y' && game->man.life == 'y'){
-                if (game->man.hit == 'y'){
-                    game->tree[i].tics = SDL_GetTicks();
-                    game->tree[i].frame = 1;
-                    game->tree[i].life = 'n';
-                }
-            }
-        }
+
     }else if (game->man.r == 'x'){
         ax = game->man.posx+170;
         ay = game->man.posy+210;
         aw = game->man.posw-230;
         ah = game->man.posh-235;
-        for (int i = 0; i < 100; i++){
-            if (!(game->tree[i].collx + game->tree[i].collw < ax|| game->tree[i].collx > ax + aw || game->tree[i].y > ay + ah || game->tree[i].y + game->tree[i].h < ay) && game->tree[i].life == 'y' && game->man.life == 'y'){
-                if (game->man.hit == 'y'){
-                    game->tree[i].tics = SDL_GetTicks();
-                    game->tree[i].frame = 1;
-                    game->tree[i].life = 'n';
-                }
-            }
-        }
+
     }else if (game->man.r == 'q'){
         ax = game->man.posx+70;
         ay = game->man.posy+100;
         aw = game->man.posw-230;
         ah = game->man.posh-235;
-        for (int i = 0; i < 100; i++){
-            if (!(game->tree[i].collx + game->tree[i].collw < ax|| game->tree[i].collx > ax + aw || game->tree[i].y > ay + ah || game->tree[i].y + game->tree[i].h < ay) && game->tree[i].life == 'y' && game->man.life == 'y'){
-                if (game->man.hit == 'y'){
-                    game->tree[i].tics = SDL_GetTicks();
-                    game->tree[i].frame = 1;
-                    game->tree[i].life = 'n';
-                }
-            }
-        }
+
     }else if (game->man.r == 'r'){
         ax = game->man.posx+170;
         ay = game->man.posy+120;
         aw = game->man.posw-230;
         ah = game->man.posh-235;
-        for (int i = 0; i < 100; i++){
-            if (!(game->tree[i].collx + game->tree[i].collw < ax|| game->tree[i].collx > ax + aw || game->tree[i].y > ay + ah || game->tree[i].y + game->tree[i].h < ay) && game->tree[i].life == 'y' && game->man.life == 'y'){
-                if (game->man.hit == 'y'){
-                    game->tree[i].tics = SDL_GetTicks();
-                    game->tree[i].frame = 1;
-                    game->tree[i].life = 'n';
-                }
-            }
-            if (game->dirt[i].life == 'n' && doe == 0 && game->man.hit == 'y'){
-                game->dirt[i].life = 'y';
-                game->dirt[i].x = game->man.collx;
-                game->dirt[i].y = game->man.colly;
-                doe = 1;
+
+    }
+    for (int i = 0; i < 100; i++){
+        if (!(game->tree[i].collx + game->tree[i].collw < ax|| game->tree[i].collx > ax + aw || game->tree[i].y > ay + ah || game->tree[i].y + game->tree[i].h < ay) && game->tree[i].life == 'y' && game->man.life == 'y'){
+            if (game->man.hit == 'y'){
+                game->tree[i].tics = SDL_GetTicks();
+                game->tree[i].frame = 1;
+                game->tree[i].life = 'n';
             }
         }
     }
@@ -616,7 +556,93 @@ void collision(SDL_Renderer *renderer, GameState *game){
             game->man.movey = 0;
             game->man.movex = 0;
         }
+//        if (!(game->skeleton[i].collx+game->skeleton[i].collw < game->man.collx + game->man.movex|| game->skeleton[i].collx > game->man.collx+game->man.movex + game->man.collw || game->skeleton[i].colly > game->man.colly+game->man.movey + game->man.collh || game->skeleton[i].colly + game->skeleton[i].collh < game->man.colly+game->man.movey) && game->skeleton[i].life == 'y' && game->man.life == 'y'){
+//            game->man.movey = 0;
+//            game->man.movex = 0;
+//        }
     }
+}
+
+void enemyMovement(GameState *game){
+    int ax;
+    int ay;
+    int aw;
+    int ah;
+    int dis;
+    double dev;
+    double angle;
+    for (int i=0; i<100;i++){
+        //agame->skeleton[i].action = 's';
+        ax = game->man.posx+60;
+        ay = game->man.posy+150;
+        aw = game->man.posw-230;
+        ah = game->man.posh-235;
+        dev = ((game->skeleton[i].posx+game->skeleton[i].posw/2)) - ((game->man.posx+game->man.posw/2));
+        if(dev == 0){
+            dev = .01;
+        }
+        angle = atan(((game->skeleton[i].posy+game->skeleton[i].posh/2) - (game->man.posy+game->man.posh/2)) / dev);
+        angle = angle * (180 / 3.14);
+        if (game->man.posx+game->man.posw/2 > game->skeleton[i].posx+game->skeleton[i].posw/2) {
+            angle -= 90;
+        } else if (game->man.posx+game->man.posw/2 < game->skeleton[i].posx+game->skeleton[i].posw/2) {
+            angle += 90;
+        }
+        printf("%f\n", angle);
+        if (!(game->skeleton[i].awarex + game->skeleton[i].awarew < ax|| game->skeleton[i].awarex > ax + aw || game->skeleton[i].posy > ay + ah || game->skeleton[i].posy + game->skeleton[i].awareh < ay) && game->skeleton[i].life == 'y' && game->man.life == 'y'){
+//                printf("collion\n");
+//            //game->man.movex = 10;
+
+            if (22.5 > angle && angle > -22.5){
+                game->skeleton[i].y = game->skeleton[i].frameh*6;
+
+            }else if (67.5 > angle && angle > 22.5){
+                game->skeleton[i].y = game->skeleton[i].frameh*7;
+            } else if (-67.5 < angle && angle < -22.5){
+                game->skeleton[i].y = game->skeleton[i].frameh*5;
+            }else if (-112.5 < angle && angle < -67.5){
+                game->skeleton[i].y = game->skeleton[i].frameh*4;
+            }else if (-157.5 < angle && angle < -112.5){
+                game->skeleton[i].y = game->skeleton[i].frameh*3;
+            }else if (112.5 > angle && angle > 67.5){
+                game->skeleton[i].y = game->skeleton[i].frameh*0;
+            }else if (157.5 > angle && angle > 112.5){
+                game->skeleton[i].y = game->skeleton[i].frameh*1;
+            }else if (202.5 > angle && angle > 157.5){
+                game->skeleton[i].y = game->skeleton[i].frameh*2;
+            }else if (-202.5 < angle && angle < -157.5){
+                game->skeleton[i].y = game->skeleton[i].frameh*2;
+            }
+
+                game->skeleton[i].action = 'r';
+                game->skeleton[i].r = 'e';
+                if (game->skeleton[i].trigger == 'n'){
+                    game->skeleton[i].trigger = 'y';
+                    game->skeleton[i].x = game->skeleton[i].framew*4;
+                }
+            dis = sqrt((pow((game->man.x - game->skeleton[i].x), 2.0)) + pow((game->man.y - game->skeleton[i].y), 2.0));
+            if (dis > 0) {
+                game->skeleton[i].posx += (game->man.posx - game->skeleton[i].posx) * .01;
+                game->skeleton[i].posy += (game->man.posy - game->skeleton[i].posy) * .01;
+            }
+//                game->skeleton[i].movey = 3;
+//                game->skeleton[i].movex = 0;
+//            if (SDL_GetTicks()-game->skeleton[i].atac > ((random()%9)+1)*3000) {
+//                if (game->skeleton[i].action == 'r') {
+//                    game->skeleton[i].trigger = 'n';
+//                }
+//                game->skeleton[i].action = 'm';
+//                if (game->skeleton[i].trigger == 'n') {
+//                    game->skeleton[i].trigger = 'y';
+//                    game->skeleton[i].x = game->skeleton[i].framew * 12;
+//                }
+//                game->skeleton[i].atac = SDL_GetTicks();
+//            }
+
+        }
+    }
+
+
 }
 
 void doRender(SDL_Renderer *renderer, GameState *game) {
@@ -636,6 +662,17 @@ void doRender(SDL_Renderer *renderer, GameState *game) {
         game->mine[i].posy -= game->man.movey;
         game->dirt[i].x -= game->man.movex;
         game->dirt[i].y -= game->man.movey;
+        game->skeleton[i].posx -= game->man.movex + game->skeleton[i].movex;
+        game->skeleton[i].posy -= game->man.movey + game->skeleton[i].movey;
+        game->skeleton[i].collx = game->skeleton[i].posx+100;
+        game->skeleton[i].colly = game->skeleton[i].posy+110;
+        game->skeleton[i].collw = game->skeleton[i].posw-220;
+        game->skeleton[i].collh = game->skeleton[i].posh-170;
+        game->skeleton[i].awarex = game->skeleton[i].posx-50;
+        game->skeleton[i].awarew = game->skeleton[i].posw+100;
+        game->skeleton[i].awareh = game->skeleton[i].posh+100;
+        game->skeleton[i].movey = 0;
+        game->skeleton[i].movex = 0;
     }
     for (int i = 0; i < 100000; ++i) {
         game->stone[i].posx -= game->man.movex;
@@ -822,7 +859,7 @@ void doRender(SDL_Renderer *renderer, GameState *game) {
             }
     }
 //        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-//        SDL_Rect trect = {game->tree[i].collx, game->tree[i].y-game->tree[i].h, game->tree[i].collw, game->tree[i].th};
+//        SDL_Rect trect = {game->skeleton[i].awarex, game->skeleton[i].posy, game->skeleton[i].awarew, game->skeleton[i].awareh};
 //        SDL_RenderFillRect(renderer, &trect);
 
         if ((game->tree[i].life == 'n' || game->tree[i].life == 'y')  && game->local == game->tree[i].local){
@@ -851,7 +888,7 @@ void doRender(SDL_Renderer *renderer, GameState *game) {
 
 
     for (int i = 0; i < 100; ++i) {
-        if (game->man.action == 'r') {
+        if (game->skeleton[i].action == 'r' && game->skeleton[i].life == 'y') {
             if (game->skeleton[i].f >= 9) {
                 game->skeleton[i].f = 1;
                 game->skeleton[i].x += game->skeleton[i].framew;
@@ -860,10 +897,34 @@ void doRender(SDL_Renderer *renderer, GameState *game) {
                 }
             }
         }
+        if (game->skeleton[i].action == 's' && game->skeleton[i].life == 'y') {
+            game->skeleton[i].trigger = 'n';
+            game->skeleton[i].hit = 'n';
+            if (game->skeleton[i].f >= 10) {
+                game->skeleton[i].f = 1;
+                game->skeleton[i].x += game->skeleton[i].framew;
+                if (game->skeleton[i].x > game->skeleton[i].framew * 3) {
+                    game->skeleton[i].x = 0;
+                }
+            }
+        }
+        if (game->skeleton[i].action == 'm') {
+            if (game->skeleton[i].f >= 9) {
+                game->skeleton[i].f = 1;
+                game->skeleton[i].x += game->skeleton[i].framew;
+                if (game->skeleton[i].x > game->skeleton[i].framew * 15) {
+                    game->skeleton[i].x = game->skeleton[i].framew * 12;
+                    game->skeleton[i].action = 's';
+                    game->skeleton[i].hit = 'y';
+                    game->skeleton[i].trigger = 'n';
+                }
+            }
+        }
         if (game->skeleton[i].life == 'y'){
             SDL_Rect rect_skelp = {game->skeleton[i].posx, game->skeleton[i].posy, game->skeleton[i].posw, game->skeleton[i].posh};
             SDL_Rect rect_skel = {game->skeleton[i].x, game->skeleton[i].y, game->skeleton[i].w, game->skeleton[i].h};
             SDL_RenderCopy(renderer, game->skel_img, &rect_skel, &rect_skelp);
+            game->skeleton[i].tics = SDL_GetTicks();
         }
     }
 
@@ -1027,6 +1088,11 @@ void load(GameState *game, SDL_Renderer *renderer, char* path){
     frame_height = texturehieght/8;
     frame_width = texturewidth/32;
     for (int i = 0; i<100; i++){
+        game->skeleton[i].atac = ((random()%9)+1)*3000;
+        game->skeleton[i].tics = SDL_GetTicks();
+        game->skeleton[i].trigger = 'n';
+        game->skeleton[i].hit = 'n';
+        game->skeleton[i].action = 's';
         game->skeleton[i].w = frame_width;
         game->skeleton[i].h = frame_height;
         game->skeleton[i].framew = frame_width;
@@ -1038,11 +1104,18 @@ void load(GameState *game, SDL_Renderer *renderer, char* path){
         game->skeleton[i].y = 0;
         game->skeleton[i].f = 1;
         game->skeleton[i].life = 'n';
-        game->skeleton[i].posx = 300;
+        game->skeleton[i].posx = 100;
         game->skeleton[i].posy = 96;
         game->skeleton[i].posw = game->skeleton[i].posh = 300;
         game->skeleton[i].movex = 0;
         game->skeleton[i].movey = 0;
+        game->skeleton[i].collx = game->skeleton[i].posx+100;
+        game->skeleton[i].colly = game->skeleton[i].posy+110;
+        game->skeleton[i].collw = game->skeleton[i].posw-220;
+        game->skeleton[i].collh = game->skeleton[i].posh-170;
+        game->skeleton[i].awarex = game->skeleton[i].posx-50;
+        game->skeleton[i].awarew = game->skeleton[i].posw+100;
+        game->skeleton[i].awareh = game->skeleton[i].posh+100;
         if (i == 99){
             game->skeleton[i].life = 'y';
         }
@@ -1264,6 +1337,7 @@ int main(int argc, char *argv[]){
     int done = 0;
     while (!done){
         done = processEvents(window, renderer, &gameSate);
+        enemyMovement(&gameSate);
         collision(renderer, &gameSate);
         doRender(renderer, &gameSate);
     }
