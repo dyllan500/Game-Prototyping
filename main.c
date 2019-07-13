@@ -8,13 +8,14 @@
 #include <math.h>
 
 typedef struct{
-    int x, y, w, h, framew, frameh, textw, texth, posx, posy, posw, posh, collx, colly, collw, collh, movex, movey, mousex, mousey;
+    int x, y, w, h, framew, frameh, textw, texth, posx, posy, posw, posh, collx, colly, collw, collh, movex, movey, mousex, mousey, spellnum;
     char life;
     char action;
     char r;
     char trigger;
     char hit;
-    int tics;
+    char spell;
+    int tics, sheildtic, sheildon;
 } Man;
 
 typedef struct{
@@ -66,12 +67,14 @@ typedef struct {
     SDL_Texture *stand;
     SDL_Texture *sword;
     SDL_Texture *bow;
+    SDL_Texture *heal;
     SDL_Texture *skel_img;
     SDL_Texture *grass;
     SDL_Texture *treetop;
     SDL_Texture *treebottom;
     SDL_Texture *mine_img;
     SDL_Texture *dirt_img;
+    SDL_Texture *spsheild;
     TTF_Font *ttf;
     int height;
     int local;
@@ -570,50 +573,43 @@ void enemyMovement(GameState *game){
     int ah;
     int dis;
     double dev;
+    double num;
     double angle;
     for (int i=0; i<100;i++){
         //agame->skeleton[i].action = 's';
+
         ax = game->man.posx+60;
         ay = game->man.posy+150;
         aw = game->man.posw-230;
         ah = game->man.posh-235;
         dev = ((game->skeleton[i].posx+game->skeleton[i].posw/2)) - ((game->man.posx+game->man.posw/2));
+        num = ((game->skeleton[i].posy+game->skeleton[i].posh/2) - (game->man.posy+game->man.posh/2));
         if(dev == 0){
             dev = .01;
         }
-        angle = atan(((game->skeleton[i].posy+game->skeleton[i].posh/2) - (game->man.posy+game->man.posh/2)) / dev);
-        angle = angle * (180 / 3.14);
-        if (game->man.posx+game->man.posw/2 > game->skeleton[i].posx+game->skeleton[i].posw/2) {
-            angle -= 90;
-        } else if (game->man.posx+game->man.posw/2 < game->skeleton[i].posx+game->skeleton[i].posw/2) {
-            angle += 90;
-        }
-        printf("%f\n", angle);
-        if (!(game->skeleton[i].awarex + game->skeleton[i].awarew < ax|| game->skeleton[i].awarex > ax + aw || game->skeleton[i].posy > ay + ah || game->skeleton[i].posy + game->skeleton[i].awareh < ay) && game->skeleton[i].life == 'y' && game->man.life == 'y'){
+        angle = atan(num / dev);
+        angle = round(angle * (180 / 3.14));
+
+        //if (!(game->skeleton[i].awarex + game->skeleton[i].awarew < ax|| game->skeleton[i].awarex > ax + aw || game->skeleton[i].posy > ay + ah || game->skeleton[i].posy + game->skeleton[i].awareh < ay) && game->skeleton[i].life == 'y' && game->man.life == 'y'){
 //                printf("collion\n");
 //            //game->man.movex = 10;
-
-            if (22.5 > angle && angle > -22.5){
-                game->skeleton[i].y = game->skeleton[i].frameh*6;
-
-            }else if (67.5 > angle && angle > 22.5){
-                game->skeleton[i].y = game->skeleton[i].frameh*7;
-            } else if (-67.5 < angle && angle < -22.5){
-                game->skeleton[i].y = game->skeleton[i].frameh*5;
-            }else if (-112.5 < angle && angle < -67.5){
+            if ((22.5 > angle && num < 0 && dev < 0) || ( num > 0 &&  angle > -22.5 && dev < 0) || (angle == 0 && dev < 0)) {
                 game->skeleton[i].y = game->skeleton[i].frameh*4;
-            }else if (-157.5 < angle && angle < -112.5){
+            }else if (angle < 67.5 && angle > 22.5 && num < 0 && dev < 0){
+                game->skeleton[i].y = game->skeleton[i].frameh*5;
+            }else if (-67.5 < angle && angle < -22.5 && num > 0 && dev < 0) {
                 game->skeleton[i].y = game->skeleton[i].frameh*3;
-            }else if (112.5 > angle && angle > 67.5){
+            }else if ((angle > 67.5 && num > 0 && dev < 0) || (angle > -90 && angle < -67.5 && num < 0 && dev < 0) || (angle == 90 && num > 0)) {
+                game->skeleton[i].y = game->skeleton[i].frameh * 2;
+            }else if (angle < 67.5 && angle > 22.5 && num > 0 && dev > 0) {
+                game->skeleton[i].y = game->skeleton[i].frameh * 1;
+            }else if ((22.5 > angle && num >= 0 && dev > 0 ) || ( num <= 0 &&  angle > -22.5 && dev > 0) || (angle == 0 && dev > 0)){
                 game->skeleton[i].y = game->skeleton[i].frameh*0;
-            }else if (157.5 > angle && angle > 112.5){
-                game->skeleton[i].y = game->skeleton[i].frameh*1;
-            }else if (202.5 > angle && angle > 157.5){
-                game->skeleton[i].y = game->skeleton[i].frameh*2;
-            }else if (-202.5 < angle && angle < -157.5){
-                game->skeleton[i].y = game->skeleton[i].frameh*2;
+            }else if (-67.5 < angle && angle < -22.5 && num < 0 && dev > 0){
+                game->skeleton[i].y = game->skeleton[i].frameh*7;
+            }else if ((angle > 67.5 && num < 0 && dev < 0) || (angle < -67.5 && num < 0 && dev > 0) || (angle == -90 && num < 0)){
+                game->skeleton[i].y = game->skeleton[i].frameh*6;
             }
-
                 game->skeleton[i].action = 'r';
                 game->skeleton[i].r = 'e';
                 if (game->skeleton[i].trigger == 'n'){
@@ -640,7 +636,7 @@ void enemyMovement(GameState *game){
 //            }
 
         }
-    }
+    //}
 
 
 }
@@ -650,6 +646,16 @@ void doRender(SDL_Renderer *renderer, GameState *game) {
 //    game->man.posy += game->man.movey;
     game->offsety += game->man.movey;
     game->offsetx += game->man.movex;
+    if (game->man.sheildon == 1){
+        if (SDL_GetTicks()-game->man.sheildtic > 1200){
+            game->man.spellnum ++;
+            game->man.sheildtic = SDL_GetTicks();
+            if (game->man.spellnum == 4){
+                game->man.spellnum = -1;
+                game->man.sheildon = 0;
+            }
+        }
+    }
     for (int i = 0; i < 100; i++){
 
         game->skeleton[i].f += 1;
@@ -668,9 +674,9 @@ void doRender(SDL_Renderer *renderer, GameState *game) {
         game->skeleton[i].colly = game->skeleton[i].posy+110;
         game->skeleton[i].collw = game->skeleton[i].posw-220;
         game->skeleton[i].collh = game->skeleton[i].posh-170;
-        game->skeleton[i].awarex = game->skeleton[i].posx-50;
-        game->skeleton[i].awarew = game->skeleton[i].posw+100;
-        game->skeleton[i].awareh = game->skeleton[i].posh+100;
+        game->skeleton[i].awarex = game->skeleton[i].posx-100;
+        game->skeleton[i].awarew = game->skeleton[i].posw+200;
+        game->skeleton[i].awareh = game->skeleton[i].posh+200;
         game->skeleton[i].movey = 0;
         game->skeleton[i].movex = 0;
     }
@@ -715,10 +721,21 @@ void doRender(SDL_Renderer *renderer, GameState *game) {
     if (game->man.action == 'p') {
         if (game->frames >= 10) {
             game->frames = 1;
+            if (game->man.spell == 'h'){
+                game->man.spellnum ++;
+            }
             game->man.x += game->man.framew;
             if (game->man.x > game->man.framew * 27) {
                 game->man.x = game->man.framew * 24;
                 game->man.action = 's';
+                if (game->man.spell == 'h'){
+                    game->man.spellnum = -1;
+                } else if (game->man.spell == 's'){
+                    game->man.spellnum = 1;
+                    game->man.sheildtic = SDL_GetTicks();
+                    game->man.sheildon = 1;
+                }
+
             }
         }
     }
@@ -879,13 +896,21 @@ void doRender(SDL_Renderer *renderer, GameState *game) {
         SDL_RenderCopy(renderer, game->stand, &rect_play, &rect_pos);
         SDL_RenderCopy(renderer, game->sword, &rect_play, &rect_pos);
         SDL_RenderCopy(renderer, game->bow, &rect_play, &rect_pos);
+        SDL_Rect rect_spell = {128*game->man.spellnum, 0, 128, 128};
+        if (game->man.spell == 'h'){
+            SDL_Rect rect_spellp = {game->man.posx+80, game->man.posy+80, 128, 128};
+            SDL_RenderCopy(renderer, game->heal, &rect_spell, &rect_spellp);
+        } else if (game->man.spell == 's') {
+            SDL_Rect rect_spellp = {game->man.posx+30, game->man.posy+50, 240, 248};
+            SDL_RenderCopy(renderer, game->spsheild, &rect_spell, &rect_spellp);
+        }
+
     } else if (game->man.life == 'n') {
         SDL_Rect rect_play = {game->man.x, game->man.y, game->man.w, game->man.h};
         SDL_Rect rect_pos = {game->man.posx, game->man.posy, game->man.posw, game->man.posh};
         SDL_RenderCopy(renderer, game->run, &rect_play, &rect_pos);
+
     }
-
-
 
     for (int i = 0; i < 100; ++i) {
         if (game->skeleton[i].action == 'r' && game->skeleton[i].life == 'y') {
@@ -1018,6 +1043,8 @@ void load(GameState *game, SDL_Renderer *renderer, char* path){
     SDL_Surface *dirt = NULL;
     SDL_Surface *mine = NULL;
     SDL_Surface *skel = NULL;
+    SDL_Surface *heals = NULL;
+    SDL_Surface *spsheilds = NULL;
     game->tics = SDL_GetTicks();
     //game->FPS = 60;
     game->frames = 1;
@@ -1027,6 +1054,7 @@ void load(GameState *game, SDL_Renderer *renderer, char* path){
     game->man.x = 0;
     game->man.y = 0;
     game->man.life = 'y';
+    game->man.sheildon = 0;
     game->man.posx = 400;
     game->man.posy = 96;
     game->man.posw = game->man.posh = 300;
@@ -1034,6 +1062,9 @@ void load(GameState *game, SDL_Renderer *renderer, char* path){
     game->man.movey = 0;
     game->offsetx = 0;
     game->offsety = 0;
+    game->man.spellnum = -1;
+    game->man.spell = 'h';
+    game->man.sheildtic = 0;
     int frame_height;
     int frame_width;
     int texturewidth;
@@ -1065,6 +1096,10 @@ void load(GameState *game, SDL_Renderer *renderer, char* path){
     p[strlen(p)-15] = 0;
     skel = IMG_Load(strcat(p,"/hero//skeleton.png"));
     p[strlen(p)-19] = 0;
+    heals = IMG_Load(strcat(p,"/hero//heal.png"));
+    p[strlen(p)-15] = 0;
+    spsheilds = IMG_Load(strcat(p,"/hero//shields.png"));
+    p[strlen(p)-18] = 0;
     game->mine_img = SDL_CreateTextureFromSurface(renderer, mine);
     game->stone_img = SDL_CreateTextureFromSurface(renderer, stone);
     game->run = SDL_CreateTextureFromSurface(renderer, surface);
@@ -1074,6 +1109,8 @@ void load(GameState *game, SDL_Renderer *renderer, char* path){
     game->grass = SDL_CreateTextureFromSurface(renderer, grass);
     game->dirt_img = SDL_CreateTextureFromSurface(renderer, dirt);
     game->skel_img = SDL_CreateTextureFromSurface(renderer, skel);
+    game->heal = SDL_CreateTextureFromSurface(renderer, heals);
+    game->spsheild = SDL_CreateTextureFromSurface(renderer, spsheilds);
     SDL_QueryTexture(game->run, NULL, NULL, &texturewidth, &texturehieght);
     frame_height = texturehieght/8;
     frame_width = texturewidth/32;
@@ -1083,6 +1120,11 @@ void load(GameState *game, SDL_Renderer *renderer, char* path){
     game->man.frameh = frame_height;
     game->man.textw = texturewidth;
     game->man.texth = texturehieght;
+
+    SDL_QueryTexture(game->spsheild, NULL, NULL, &texturewidth, &texturehieght);
+    frame_height = texturehieght/1;
+    frame_width = texturewidth/4;
+    printf("w: %d\n H: %d\n",frame_width, frame_height);
 
     SDL_QueryTexture(game->skel_img, NULL, NULL, &texturewidth, &texturehieght);
     frame_height = texturehieght/8;
@@ -1113,9 +1155,9 @@ void load(GameState *game, SDL_Renderer *renderer, char* path){
         game->skeleton[i].colly = game->skeleton[i].posy+110;
         game->skeleton[i].collw = game->skeleton[i].posw-220;
         game->skeleton[i].collh = game->skeleton[i].posh-170;
-        game->skeleton[i].awarex = game->skeleton[i].posx-50;
-        game->skeleton[i].awarew = game->skeleton[i].posw+100;
-        game->skeleton[i].awareh = game->skeleton[i].posh+100;
+        game->skeleton[i].awarex = game->skeleton[i].posx-100;
+        game->skeleton[i].awarew = game->skeleton[i].posw+200;
+        game->skeleton[i].awareh = game->skeleton[i].posh+200;
         if (i == 99){
             game->skeleton[i].life = 'y';
         }
@@ -1280,6 +1322,8 @@ void load(GameState *game, SDL_Renderer *renderer, char* path){
     SDL_FreeSurface(mine);
     SDL_FreeSurface(dirt);
     SDL_FreeSurface(skel);
+    SDL_FreeSurface(heals);
+    SDL_FreeSurface(spsheilds);
 }
 
 void save(GameState *game){
