@@ -15,6 +15,9 @@ typedef struct{
     char trigger;
     char hit;
     char spell;
+    char clothing;
+    char primary;
+    char secondary;
     int tics, sheildtic, sheildon;
 } Man;
 
@@ -63,10 +66,12 @@ typedef struct {
     Dirt dirt[100];
     Skeleton skeleton[100];
     SDL_Texture *stone_img;
-    SDL_Texture *run;
-    SDL_Texture *stand;
-    SDL_Texture *sword;
-    SDL_Texture *bow;
+    SDL_Texture *leather;
+    SDL_Texture *head1;
+    SDL_Texture *ax;
+    SDL_Texture *staff;
+    SDL_Texture *longbow;
+    SDL_Texture *wand;
     SDL_Texture *heal;
     SDL_Texture *skel_img;
     SDL_Texture *grass;
@@ -75,6 +80,20 @@ typedef struct {
     SDL_Texture *mine_img;
     SDL_Texture *dirt_img;
     SDL_Texture *spsheild;
+    SDL_Texture *dagger;
+    SDL_Texture *greatbow;
+    SDL_Texture *greatstaff;
+    SDL_Texture *greatsword;
+    SDL_Texture *cloth;
+    SDL_Texture *longsword;
+    SDL_Texture *head2;
+    SDL_Texture *head3;
+    SDL_Texture *rod;
+    SDL_Texture *shield;
+    SDL_Texture *shortbow;
+    SDL_Texture *shortsword;
+    SDL_Texture *slingshot;
+    SDL_Texture *steel;
     TTF_Font *ttf;
     int height;
     int local;
@@ -892,10 +911,11 @@ void doRender(SDL_Renderer *renderer, GameState *game) {
     if (game->man.life == 'y') {
         SDL_Rect rect_play = {game->man.x, game->man.y, game->man.w, game->man.h};
         SDL_Rect rect_pos = {game->man.posx, game->man.posy, game->man.posw, game->man.posh};
-        SDL_RenderCopy(renderer, game->run, &rect_play, &rect_pos);
-        SDL_RenderCopy(renderer, game->stand, &rect_play, &rect_pos);
-        SDL_RenderCopy(renderer, game->sword, &rect_play, &rect_pos);
-        SDL_RenderCopy(renderer, game->bow, &rect_play, &rect_pos);
+        SDL_RenderCopy(renderer, game->leather, &rect_play, &rect_pos);
+        SDL_RenderCopy(renderer, game->head1, &rect_play, &rect_pos);
+        //SDL_RenderCopy(renderer, game->ax, &rect_play, &rect_pos);
+        SDL_RenderCopy(renderer, game->wand, &rect_play, &rect_pos);
+        SDL_RenderCopy(renderer, game->longbow, &rect_play, &rect_pos);
         SDL_Rect rect_spell = {128*game->man.spellnum, 0, 128, 128};
         if (game->man.spell == 'h'){
             SDL_Rect rect_spellp = {game->man.posx+80, game->man.posy+80, 128, 128};
@@ -908,7 +928,7 @@ void doRender(SDL_Renderer *renderer, GameState *game) {
     } else if (game->man.life == 'n') {
         SDL_Rect rect_play = {game->man.x, game->man.y, game->man.w, game->man.h};
         SDL_Rect rect_pos = {game->man.posx, game->man.posy, game->man.posw, game->man.posh};
-        SDL_RenderCopy(renderer, game->run, &rect_play, &rect_pos);
+        SDL_RenderCopy(renderer, game->leather, &rect_play, &rect_pos);
 
     }
 
@@ -1034,9 +1054,9 @@ void doRender(SDL_Renderer *renderer, GameState *game) {
 
 void load(GameState *game, SDL_Renderer *renderer, char* path){
     SDL_Surface *surface = NULL;
-    SDL_Surface *head = NULL;
-    SDL_Surface *sword = NULL;
-    SDL_Surface *bow = NULL;
+    SDL_Surface *head1 = NULL;
+    SDL_Surface *ax = NULL;
+    SDL_Surface *longbow = NULL;
     SDL_Surface *grass = NULL;
     SDL_Surface *tree = NULL;
     SDL_Surface *stone = NULL;
@@ -1045,6 +1065,22 @@ void load(GameState *game, SDL_Renderer *renderer, char* path){
     SDL_Surface *skel = NULL;
     SDL_Surface *heals = NULL;
     SDL_Surface *spsheilds = NULL;
+    SDL_Surface *wand = NULL;
+    SDL_Surface *cloth = NULL;
+    SDL_Surface *dagger = NULL;
+    SDL_Surface *greatbow = NULL;
+    SDL_Surface *greatstaff = NULL;
+    SDL_Surface *greatsword = NULL;
+    SDL_Surface *longsword = NULL;
+    SDL_Surface *head2 = NULL;
+    SDL_Surface *head3 = NULL;
+    SDL_Surface *rod = NULL;
+    SDL_Surface *shield = NULL;
+    SDL_Surface *shortbow = NULL;
+    SDL_Surface *shortsword = NULL;
+    SDL_Surface *slingshot = NULL;
+    SDL_Surface *staff;
+    SDL_Surface *steel;
     game->tics = SDL_GetTicks();
     //game->FPS = 60;
     game->frames = 1;
@@ -1072,11 +1108,11 @@ void load(GameState *game, SDL_Renderer *renderer, char* path){
     char *p = path;
     surface = IMG_Load(strcat(p,"/hero//leather_armor.png"));
     p[strlen(p)-24] = 0;
-    head = IMG_Load(strcat(p,"/hero//male_head1.png"));
+    head1 = IMG_Load(strcat(p,"/hero//male_head1.png"));
     p[strlen(p)-21] = 0;
-    sword = IMG_Load(strcat(p,"/hero//ax.png"));
+    ax = IMG_Load(strcat(p,"/hero//ax.png"));
     p[strlen(p)-13] = 0;
-    bow = IMG_Load(strcat(p,"/hero//longbow.png"));
+    longbow = IMG_Load(strcat(p,"/hero//longbow.png"));
     p[strlen(p)-18] = 0;
     grass = IMG_Load(strcat(p,"/tile//grass.png"));
     p[strlen(p)-16] = 0;
@@ -1098,20 +1134,68 @@ void load(GameState *game, SDL_Renderer *renderer, char* path){
     p[strlen(p)-19] = 0;
     heals = IMG_Load(strcat(p,"/hero//heal.png"));
     p[strlen(p)-15] = 0;
+    wand = IMG_Load(strcat(p,"/hero//wand.png"));
+    p[strlen(p)-15] = 0;
     spsheilds = IMG_Load(strcat(p,"/hero//shields.png"));
     p[strlen(p)-18] = 0;
+    cloth = IMG_Load(strcat(p,"/hero//clothes.png"));
+    p[strlen(p)-18] = 0;
+    dagger = IMG_Load(strcat(p,"/hero//dagger.png"));
+    p[strlen(p)-17] = 0;
+    greatbow = IMG_Load(strcat(p,"/hero//greatbow.png"));
+    p[strlen(p)-19] = 0;
+    greatstaff = IMG_Load(strcat(p,"/hero//greatstaff.png"));
+    p[strlen(p)-21] = 0;
+    greatsword = IMG_Load(strcat(p,"/hero//greatsword.png"));
+    p[strlen(p)-21] = 0;
+    longsword = IMG_Load(strcat(p,"/hero//longsword.png"));
+    p[strlen(p)-20] = 0;
+    head2 = IMG_Load(strcat(p,"/hero//male_head2.png"));
+    p[strlen(p)-21] = 0;
+    head3 = IMG_Load(strcat(p,"/hero//male_head3.png"));
+    p[strlen(p)-21] = 0;
+    rod = IMG_Load(strcat(p,"/hero//rod.png"));
+    p[strlen(p)-14] = 0;
+    shield = IMG_Load(strcat(p,"/hero//shield.png"));
+    p[strlen(p)-17] = 0;
+    shortsword = IMG_Load(strcat(p,"/hero//shortsword.png"));
+    p[strlen(p)-21] = 0;
+    shortbow = IMG_Load(strcat(p,"/hero//shortbow.png"));
+    p[strlen(p)-19] = 0;
+    slingshot = IMG_Load(strcat(p,"/hero//slingshot.png"));
+    p[strlen(p)-20] = 0;
+    staff = IMG_Load(strcat(p,"/hero//staff.png"));
+    p[strlen(p)-16] = 0;
+    steel = IMG_Load(strcat(p,"/hero//steel.png"));
+    p[strlen(p)-16] = 0;
     game->mine_img = SDL_CreateTextureFromSurface(renderer, mine);
     game->stone_img = SDL_CreateTextureFromSurface(renderer, stone);
-    game->run = SDL_CreateTextureFromSurface(renderer, surface);
-    game->stand = SDL_CreateTextureFromSurface(renderer, head);
-    game->sword = SDL_CreateTextureFromSurface(renderer, sword);
-    game->bow = SDL_CreateTextureFromSurface(renderer, bow);
+    game->leather = SDL_CreateTextureFromSurface(renderer, surface);
+    game->head1 = SDL_CreateTextureFromSurface(renderer, head1);
+    game->ax = SDL_CreateTextureFromSurface(renderer, ax);
+    game->longbow = SDL_CreateTextureFromSurface(renderer, longbow);
     game->grass = SDL_CreateTextureFromSurface(renderer, grass);
     game->dirt_img = SDL_CreateTextureFromSurface(renderer, dirt);
     game->skel_img = SDL_CreateTextureFromSurface(renderer, skel);
     game->heal = SDL_CreateTextureFromSurface(renderer, heals);
     game->spsheild = SDL_CreateTextureFromSurface(renderer, spsheilds);
-    SDL_QueryTexture(game->run, NULL, NULL, &texturewidth, &texturehieght);
+    game->wand = SDL_CreateTextureFromSurface(renderer, wand);
+    game->cloth = SDL_CreateTextureFromSurface(renderer, cloth);
+    game->dagger = SDL_CreateTextureFromSurface(renderer, dagger);
+    game->greatbow = SDL_CreateTextureFromSurface(renderer, greatbow);
+    game->greatstaff = SDL_CreateTextureFromSurface(renderer, greatstaff);
+    game->greatsword = SDL_CreateTextureFromSurface(renderer, greatsword);
+    game->longsword = SDL_CreateTextureFromSurface(renderer, longsword);
+    game->head2 = SDL_CreateTextureFromSurface(renderer, head2);
+    game->head3 = SDL_CreateTextureFromSurface(renderer, head3);
+    game->rod = SDL_CreateTextureFromSurface(renderer, rod);
+    game->shield = SDL_CreateTextureFromSurface(renderer, shield);
+    game->shortsword = SDL_CreateTextureFromSurface(renderer, shortsword);
+    game->shortbow = SDL_CreateTextureFromSurface(renderer, shortbow);
+    game->slingshot = SDL_CreateTextureFromSurface(renderer, slingshot);
+    game->steel = SDL_CreateTextureFromSurface(renderer, steel);
+    game->staff = SDL_CreateTextureFromSurface(renderer, staff);
+    SDL_QueryTexture(game->leather, NULL, NULL, &texturewidth, &texturehieght);
     frame_height = texturehieght/8;
     frame_width = texturewidth/32;
     game->man.w = frame_width;
@@ -1314,9 +1398,9 @@ void load(GameState *game, SDL_Renderer *renderer, char* path){
 
     SDL_FreeSurface(grass);
     SDL_FreeSurface(surface);
-    SDL_FreeSurface(head);
-    SDL_FreeSurface(sword);
-    SDL_FreeSurface(bow);
+    SDL_FreeSurface(head1);
+    SDL_FreeSurface(ax);
+    SDL_FreeSurface(longbow);
     SDL_FreeSurface(tree);
     SDL_FreeSurface(stone);
     SDL_FreeSurface(mine);
@@ -1324,6 +1408,22 @@ void load(GameState *game, SDL_Renderer *renderer, char* path){
     SDL_FreeSurface(skel);
     SDL_FreeSurface(heals);
     SDL_FreeSurface(spsheilds);
+    SDL_FreeSurface(wand);
+    SDL_FreeSurface(cloth);
+    SDL_FreeSurface(dagger);
+    SDL_FreeSurface(greatbow);
+    SDL_FreeSurface(greatstaff);
+    SDL_FreeSurface(greatsword);
+    SDL_FreeSurface(longbow);
+    SDL_FreeSurface(head2);
+    SDL_FreeSurface(head3);
+    SDL_FreeSurface(rod);
+    SDL_FreeSurface(shield);
+    SDL_FreeSurface(shortbow);
+    SDL_FreeSurface(shortsword);
+    SDL_FreeSurface(staff);
+    SDL_FreeSurface(slingshot);
+    SDL_FreeSurface(steel);
 }
 
 void save(GameState *game){
