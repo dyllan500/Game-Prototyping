@@ -1394,8 +1394,6 @@ void load(GameState *game, SDL_Renderer *renderer, char* path){
         game->dirt[i].life = 'n';
         game->dirt[i].tics = SDL_GetTicks();
     }
-
-
     SDL_FreeSurface(grass);
     SDL_FreeSurface(surface);
     SDL_FreeSurface(head1);
@@ -1414,7 +1412,6 @@ void load(GameState *game, SDL_Renderer *renderer, char* path){
     SDL_FreeSurface(greatbow);
     SDL_FreeSurface(greatstaff);
     SDL_FreeSurface(greatsword);
-    SDL_FreeSurface(longbow);
     SDL_FreeSurface(head2);
     SDL_FreeSurface(head3);
     SDL_FreeSurface(rod);
@@ -1424,6 +1421,7 @@ void load(GameState *game, SDL_Renderer *renderer, char* path){
     SDL_FreeSurface(staff);
     SDL_FreeSurface(slingshot);
     SDL_FreeSurface(steel);
+
 }
 
 void save(GameState *game){
@@ -1467,10 +1465,12 @@ int main(int argc, char *argv[]){
     }
     gameSate.height = 720;
     gameSate.width = 1080;
+
     srandom((int)time(NULL));
     SDL_Init(SDL_INIT_VIDEO);
     IMG_Init(IMG_INIT_PNG);
     IMG_Init(IMG_INIT_JPG);
+
     TTF_Init();
     SDL_Window *window= NULL;
     SDL_Renderer *renderer = NULL;
@@ -1479,6 +1479,7 @@ int main(int argc, char *argv[]){
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
     load(&gameSate, renderer, path);
     int done = 0;
+    printf("rfrf\n");
     while (!done){
         done = processEvents(window, renderer, &gameSate);
         enemyMovement(&gameSate);
