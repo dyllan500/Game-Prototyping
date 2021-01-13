@@ -1105,69 +1105,38 @@ void load(GameState *game, SDL_Renderer *renderer, char* path){
     int frame_width;
     int texturewidth;
     int texturehieght;
-    char *p = path;
-    surface = IMG_Load(strcat(p,"/hero//leather_armor.png"));
-    p[strlen(p)-24] = 0;
-    head1 = IMG_Load(strcat(p,"/hero//male_head1.png"));
-    p[strlen(p)-21] = 0;
-    ax = IMG_Load(strcat(p,"/hero//ax.png"));
-    p[strlen(p)-13] = 0;
-    longbow = IMG_Load(strcat(p,"/hero//longbow.png"));
-    p[strlen(p)-18] = 0;
-    grass = IMG_Load(strcat(p,"/tile//grass.png"));
-    p[strlen(p)-16] = 0;
-    tree = IMG_Load(strcat(p,"/tile//treetop.png"));
-    p[strlen(p)-18] = 0;
+    surface = IMG_Load("hero/leather_armor.png");
+    head1 = IMG_Load("hero/male_head1.png");
+    ax = IMG_Load("hero/ax.png");
+    longbow = IMG_Load("hero/longbow.png");
+    grass = IMG_Load("tile/grass.png");
+    tree = IMG_Load("tile/treetop.png");
     game->treetop = SDL_CreateTextureFromSurface(renderer, tree);
-    tree = IMG_Load(strcat(p,"/tile//treebottom.png"));
-    p[strlen(p)-21] = 0;
+    tree = IMG_Load("tile/treebottom.png");
     game->treebottom = SDL_CreateTextureFromSurface(renderer, tree);
-    game->ttf = TTF_OpenFont(strcat(p,"/fonts//mon.ttf"), 70);
-    p[strlen(p)-15] = 0;
-    stone = IMG_Load(strcat(p,"/tile//stone.png"));
-    p[strlen(p)-16] = 0;
-    mine = IMG_Load(strcat(p,"/tile//mines.png"));
-    p[strlen(p)-16] = 0;
-    dirt = IMG_Load(strcat(p,"/tile//dirt.jpg"));
-    p[strlen(p)-15] = 0;
-    skel = IMG_Load(strcat(p,"/hero//skeleton.png"));
-    p[strlen(p)-19] = 0;
-    heals = IMG_Load(strcat(p,"/hero//heal.png"));
-    p[strlen(p)-15] = 0;
-    wand = IMG_Load(strcat(p,"/hero//wand.png"));
-    p[strlen(p)-15] = 0;
-    spsheilds = IMG_Load(strcat(p,"/hero//shields.png"));
-    p[strlen(p)-18] = 0;
-    cloth = IMG_Load(strcat(p,"/hero//clothes.png"));
-    p[strlen(p)-18] = 0;
-    dagger = IMG_Load(strcat(p,"/hero//dagger.png"));
-    p[strlen(p)-17] = 0;
-    greatbow = IMG_Load(strcat(p,"/hero//greatbow.png"));
-    p[strlen(p)-19] = 0;
-    greatstaff = IMG_Load(strcat(p,"/hero//greatstaff.png"));
-    p[strlen(p)-21] = 0;
-    greatsword = IMG_Load(strcat(p,"/hero//greatsword.png"));
-    p[strlen(p)-21] = 0;
-    longsword = IMG_Load(strcat(p,"/hero//longsword.png"));
-    p[strlen(p)-20] = 0;
-    head2 = IMG_Load(strcat(p,"/hero//male_head2.png"));
-    p[strlen(p)-21] = 0;
-    head3 = IMG_Load(strcat(p,"/hero//male_head3.png"));
-    p[strlen(p)-21] = 0;
-    rod = IMG_Load(strcat(p,"/hero//rod.png"));
-    p[strlen(p)-14] = 0;
-    shield = IMG_Load(strcat(p,"/hero//shield.png"));
-    p[strlen(p)-17] = 0;
-    shortsword = IMG_Load(strcat(p,"/hero//shortsword.png"));
-    p[strlen(p)-21] = 0;
-    shortbow = IMG_Load(strcat(p,"/hero//shortbow.png"));
-    p[strlen(p)-19] = 0;
-    slingshot = IMG_Load(strcat(p,"/hero//slingshot.png"));
-    p[strlen(p)-20] = 0;
-    staff = IMG_Load(strcat(p,"/hero//staff.png"));
-    p[strlen(p)-16] = 0;
-    steel = IMG_Load(strcat(p,"/hero//steel.png"));
-    p[strlen(p)-16] = 0;
+    game->ttf = TTF_OpenFont("fonts/mon.ttf", 70);
+    stone = IMG_Load("tile/stone.png");
+    mine = IMG_Load("tile/mines.png");
+    dirt = IMG_Load("tile/dirt.jpg");
+    skel = IMG_Load("hero/skeleton.png");
+    heals = IMG_Load("hero/heal.png");
+    wand = IMG_Load("hero/wand.png");
+    spsheilds = IMG_Load("hero/shields.png");
+    cloth = IMG_Load("hero/clothes.png");
+    dagger = IMG_Load("hero/dagger.png");
+    greatbow = IMG_Load("hero/greatbow.png");
+    greatstaff = IMG_Load("hero/greatstaff.png");
+    greatsword = IMG_Load("hero/greatsword.png");
+    longsword = IMG_Load("hero/longsword.png");
+    head2 = IMG_Load("hero/male_head2.png");
+    head3 = IMG_Load("hero/male_head3.png");
+    rod = IMG_Load("hero/rod.png");
+    shield = IMG_Load("hero/shield.png");
+    shortsword = IMG_Load("hero/shortsword.png");
+    shortbow = IMG_Load("hero/shortbow.png");
+    slingshot = IMG_Load("hero/slingshot.png");
+    staff = IMG_Load("hero/staff.png");
+    steel = IMG_Load("hero/steel.png");
     game->mine_img = SDL_CreateTextureFromSurface(renderer, mine);
     game->stone_img = SDL_CreateTextureFromSurface(renderer, stone);
     game->leather = SDL_CreateTextureFromSurface(renderer, surface);
@@ -1208,7 +1177,7 @@ void load(GameState *game, SDL_Renderer *renderer, char* path){
     SDL_QueryTexture(game->spsheild, NULL, NULL, &texturewidth, &texturehieght);
     frame_height = texturehieght/1;
     frame_width = texturewidth/4;
-    printf("w: %d\n H: %d\n",frame_width, frame_height);
+  //  printf("w: %d\n H: %d\n",frame_width, frame_height);
 
     SDL_QueryTexture(game->skel_img, NULL, NULL, &texturewidth, &texturehieght);
     frame_height = texturehieght/8;
@@ -1250,62 +1219,62 @@ void load(GameState *game, SDL_Renderer *renderer, char* path){
     SDL_QueryTexture(game->mine_img, NULL, NULL, &texturewidth, &texturehieght);
     frame_width = texturewidth/4;
     game->stone->type = 0;
-//    for (int i =0; i<100; i++){
-//        if (i == 99){
-//            game->mine[i].w = frame_width;
-//            game->mine[i].h = texturehieght;
-//            game->mine[i].posx = -100000;
-//            game->mine[i].posy = -1000000;
-//            game->mine[i].x = frame_width*0;
-//            game->mine[i].y = 0;
-//            game->mine[i].life = 'p';
-//            game->mine[i].posw = 188;
-//            game->mine[i].posh = 188;
-//            game->mine[i].offsetx = 0;
-//            game->mine[i].offsety = 0;
-//        }else{
-//            game->mine[i].w = frame_width;
-//            game->mine[i].h = texturehieght;
-//            game->mine[i].posx = -100000;
-//            game->mine[i].posy = -1000000;
-//            game->mine[i].x = frame_width*8;
-//            game->mine[i].y = 0;
-//            game->mine[i].life = 'n';
-//            game->mine[i].posw = 188;
-//            game->mine[i].posh = 188;
-//            game->mine[i].offsetx = 0;
-//            game->mine[i].offsety = 0;
-//        }
-//    }
+    for (int i =0; i<100; i++){
+        if (i == 99){
+            game->mine[i].w = frame_width;
+            game->mine[i].h = texturehieght;
+            game->mine[i].posx = -100000;
+            game->mine[i].posy = -1000000;
+            game->mine[i].x = frame_width*0;
+            game->mine[i].y = 0;
+            game->mine[i].life = 'p';
+            game->mine[i].posw = 188;
+            game->mine[i].posh = 188;
+            game->mine[i].offsetx = 0;
+            game->mine[i].offsety = 0;
+        }else{
+            game->mine[i].w = frame_width;
+            game->mine[i].h = texturehieght;
+            game->mine[i].posx = -100000;
+            game->mine[i].posy = -1000000;
+            game->mine[i].x = frame_width*8;
+            game->mine[i].y = 0;
+            game->mine[i].life = 'n';
+            game->mine[i].posw = 188;
+            game->mine[i].posh = 188;
+            game->mine[i].offsetx = 0;
+            game->mine[i].offsety = 0;
+        }
+    }
     SDL_QueryTexture(game->stone_img, NULL, NULL, &texturewidth, &texturehieght);
     frame_width = texturewidth/24;
-//    for (int i =0; i<100000; i++){
-//        if (i == 99){
-//            game->stone[i].w = frame_width;
-//            game->stone[i].h = texturehieght;
-//            game->stone[i].posx = -100000;
-//            game->stone[i].posy = -1000000;
-//            game->stone[i].x = frame_width*0;
-//            game->stone[i].y = 0;
-//            game->stone[i].life = 'p';
-//            game->stone[i].posw = 188;
-//            game->stone[i].posh = 188;
-//            game->stone[i].offsetx = 0;
-//            game->stone[i].offsety = 0;
-//        }else{
-//            game->stone[i].w = frame_width;
-//            game->stone[i].h = texturehieght;
-//            game->stone[i].posx = -100000;
-//            game->stone[i].posy = -1000000;
-//            game->stone[i].x = frame_width*8;
-//            game->stone[i].y = 0;
-//            game->stone[i].life = 'n';
-//            game->stone[i].posw = 188;
-//            game->stone[i].posh = 188;
-//            game->stone[i].offsetx = 0;
-//            game->stone[i].offsety = 0;
-//        }
-//    }
+    for (int i =0; i<100000; i++){
+        if (i == 99){
+            game->stone[i].w = frame_width;
+            game->stone[i].h = texturehieght;
+            game->stone[i].posx = -100000;
+            game->stone[i].posy = -1000000;
+            game->stone[i].x = frame_width*0;
+            game->stone[i].y = 0;
+            game->stone[i].life = 'p';
+            game->stone[i].posw = 188;
+            game->stone[i].posh = 188;
+            game->stone[i].offsetx = 0;
+            game->stone[i].offsety = 0;
+        }else{
+            game->stone[i].w = frame_width;
+            game->stone[i].h = texturehieght;
+            game->stone[i].posx = -100000;
+            game->stone[i].posy = -1000000;
+            game->stone[i].x = frame_width*8;
+            game->stone[i].y = 0;
+            game->stone[i].life = 'n';
+            game->stone[i].posw = 188;
+            game->stone[i].posh = 188;
+            game->stone[i].offsetx = 0;
+            game->stone[i].offsety = 0;
+        }
+    }
     for (int i = 0; i < 100000; ++i) {
         if (i != 99){
             game->stone[i].posx = game->stone[i].posx + game->stone[i].offsetx;
@@ -1324,44 +1293,44 @@ void load(GameState *game, SDL_Renderer *renderer, char* path){
         }
     }
     for (int i = 0; i < 100;i ++) {
-        printf("%d  %d\n",game->tree[i].x, game->tree[i].offsetx);
+        //printf("%d  %d\n",game->tree[i].x, game->tree[i].offsetx);
     }
-//    for(int i = 0; i < 100; i++){
-//        if (i == 99){
-//            game->tree[i].life = 'p';
-//            game->tree[i].tics = SDL_GetTicks();
-//            game->tree[i].frame = 0;
-//            game->tree[i].x = -900335;
-//            game->tree[i].y = 185*(i+1);
-//            game->tree[i].w = 192;
-//            game->tree[i].collx = game->tree[i].x+80;
-//            game->tree[i].collw = game->tree[i].w-150;
-//            game->tree[i].h = 60;
-//            game->tree[i].th = 147;
-//            game->tree[i].treex = 0;
-//            game->tree[i].treey = 0;
-//            game->tree[i].tradius = 0;
-//            game->tree[i].offsetx = 0;
-//            game->tree[i].offsety = 0;
-//        }
-//        else{
-//            game->tree[i].life = 'n';
-//            game->tree[i].tics = SDL_GetTicks();
-//            game->tree[i].frame = 0;
-//            game->tree[i].x = -11335;
-//            game->tree[i].y = 185;
-//            game->tree[i].w = 192;
-//            game->tree[i].collx = game->tree[i].x+80;
-//            game->tree[i].collw = game->tree[i].w-150;
-//            game->tree[i].h = 60;
-//            game->tree[i].th = 147;
-//            game->tree[i].treex = 0;
-//            game->tree[i].treey = 0;
-//            game->tree[i].tradius = 0;
-//            game->tree[i].offsetx = 0;
-//            game->tree[i].offsety = 0;
-//        }
-//    }
+    for(int i = 0; i < 100; i++){
+        if (i == 99){
+            game->tree[i].life = 'p';
+            game->tree[i].tics = SDL_GetTicks();
+            game->tree[i].frame = 0;
+            game->tree[i].x = -900335;
+            game->tree[i].y = 185*(i+1);
+            game->tree[i].w = 192;
+            game->tree[i].collx = game->tree[i].x+80;
+            game->tree[i].collw = game->tree[i].w-150;
+            game->tree[i].h = 60;
+            game->tree[i].th = 147;
+            game->tree[i].treex = 0;
+            game->tree[i].treey = 0;
+            game->tree[i].tradius = 0;
+            game->tree[i].offsetx = 0;
+            game->tree[i].offsety = 0;
+        }
+        else{
+            game->tree[i].life = 'n';
+            game->tree[i].tics = SDL_GetTicks();
+            game->tree[i].frame = 0;
+            game->tree[i].x = -11335;
+            game->tree[i].y = 185;
+            game->tree[i].w = 192;
+            game->tree[i].collx = game->tree[i].x+80;
+            game->tree[i].collw = game->tree[i].w-150;
+            game->tree[i].h = 60;
+            game->tree[i].th = 147;
+            game->tree[i].treex = 0;
+            game->tree[i].treey = 0;
+            game->tree[i].tradius = 0;
+            game->tree[i].offsetx = 0;
+            game->tree[i].offsety = 0;
+        }
+    }
     game->man.action = 's';
     game->man.trigger = 'n';
     game->menu->tic = SDL_GetTicks();
@@ -1442,7 +1411,7 @@ int main(int argc, char *argv[]){
     char *path = argv[0];
     //change to 10 so it can excute in the same dictorary as the image
 
-    path[strlen(path)-23] = 0;
+    path[strlen(path)-10] = 0;
 
 //    char str[10000];
 
@@ -1460,9 +1429,6 @@ int main(int argc, char *argv[]){
         fread(&gameSate.mine, sizeof(gameSate.mine), 1, fptr);
     }
     fclose(fptr);
-    for (int i = 0; i < 100;i ++) {
-        printf("%d  %d\n",gameSate.stone[i].x, gameSate.stone[i].y);
-    }
     gameSate.height = 720;
     gameSate.width = 1080;
 
@@ -1479,7 +1445,6 @@ int main(int argc, char *argv[]){
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
     load(&gameSate, renderer, path);
     int done = 0;
-    printf("rfrf\n");
     while (!done){
         done = processEvents(window, renderer, &gameSate);
         enemyMovement(&gameSate);
